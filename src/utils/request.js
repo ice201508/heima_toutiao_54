@@ -6,4 +6,22 @@ const request = axios.create({
   baseURL: config.baseURL,
 });
 
+request.interceptors.request.use(
+  function(configAxios) {
+    return configAxios;
+  },
+  function(error) {
+    return Promise.reject(error);
+  }
+);
+
+request.interceptors.response.use(
+  function(response) {
+    return response.data;
+  },
+  function(error) {
+    return Promise.reject(error);
+  }
+);
+
 export default request;

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { textAjax } from '@/api/text';
+import { textAjax } from '@/api/users';
 
 export default {
   name: 'Test',

@@ -6,32 +6,40 @@
       </template>
     </van-nav-bar>
     <!-- 登录表单 -->
-    <van-form @submit="onSubmit">
+    <van-form ref="loginForm" @submit="onSubmit">
       <van-field
-        v-model="username"
-        name="用户名"
-        label="用户名"
-        placeholder="用户名"
-        :rules="[{ required: true, message: '请填写用户名' }]"
+        v-model="mobile"
+        name="mobile"
+        label="手机号"
+        placeholder="请输入手机号"
+        :rules="userFormRules.mobile"
       >
         <i slot="left-icon" class="iconfont iconwode"></i>
       </van-field>
       <van-field
-        v-model="password"
-        type="password"
-        name="密码"
-        label="密码"
+        v-model="code"
+        type="number"
+        name="code"
+        label="验证码"
         left-icon="iconfont iconyanzhengma"
-        placeholder="密码"
-        :rules="[{ required: true, message: '请填写密码' }]"
+        placeholder="验证码"
+        :rules="userFormRules.code"
       >
         <i slot="left-icon" class="iconfont iconyanzhengma"></i>
         <template #button>
-          <van-button size="small" type="primary">发送验证码</van-button>
+          <van-button
+            native-type="button"
+            v-if="!isCountDownShow"
+            size="small"
+            type="primary"
+            @click="sendCode"
+            >发送验证码</van-button
+          >
+          <van-count-down :time="2 * 1000" format="ss s" @finish="isCountDownShow = false" v-else />
         </template>
       </van-field>
       <div style="margin: 16px;">
-        <van-button block type="info" disabled native-type="submit">
+        <van-button block type="info" native-type="submit">
           登录
         </van-button>
       </div>
@@ -40,16 +48,60 @@
 </template>
 
 <script>
+import { login, smsCodes } from '@/api/users';
+
 export default {
   name: 'Login',
   data() {
     return {
-      username: '',
-      password: '',
+      mobile: '13911111111',
+      code: '246810',
+      isCountDownShow: false,
+      userFormRules: {
+        mobile: [
+          { required: true, message: '请填写电话' },
+          { pattern: /^1[3|5|6|7|8|9]\d{9}$/, message: '请填写11位数字电话' },
+        ],
+        code: [
+          { required: true, message: '请填写验证码' },
+          { pattern: /^\d{6}$/, message: '请填写6位数字密码' },
+        ],
+      },
     };
   },
   methods: {
-    onSubmit() {},
+    async onSubmit() {
+      this.$toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+      });
+      try {
+        const res = await login({ mobile: this.mobile, code: this.code });
+        this.$store.commit('setItem', res.data);
+        // console.log(res);
+        // window.localStorage.setItem('token', res.data)
+        // this.$router.push('/user')
+        this.$toast.success('登录成功');
+      } catch (err) {
+        console.log(err);
+        this.$toast.success(err.message);
+      }
+    },
+    sendCode() {
+      this.$refs.loginForm.validate('mobile').then(async (res) => {
+        console.log(res);
+        if (!res) {
+          this.isCountDownShow = true;
+          try {
+            await smsCodes(this.mobile);
+            this.$toast.success('验证码已发送，请查收');
+          } catch (err) {
+            this.isCountDownShow = false;
+            return console.log(err);
+          }
+        }
+      });
+    },
   },
 };
 </script>
