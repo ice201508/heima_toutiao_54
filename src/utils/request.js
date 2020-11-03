@@ -21,7 +21,7 @@ request.interceptors.response.use(
   },
   function(error) {
     // 响应失败的拦截器，上面是请求成功的拦截器
-    console.log(error);
+    // console.log(error.response);
     return Promise.reject(error);
   }
 );

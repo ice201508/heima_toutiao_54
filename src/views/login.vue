@@ -49,43 +49,55 @@
 
 <script>
 import { login, smsCodes } from '@/api/users';
+import errorHandler from '@/utils/asyncErrorHandler';
 
 export default {
   name: 'Login',
   data() {
     return {
-      mobile: '13911111111',
-      code: '246810',
+      mobile: '139111111',
+      code: '24681',
       isCountDownShow: false,
       userFormRules: {
         mobile: [
           { required: true, message: '请填写电话' },
-          { pattern: /^1[3|5|6|7|8|9]\d{9}$/, message: '请填写11位数字电话' },
+          // { pattern: /^1[3|5|6|7|8|9]\d{9}$/, message: '请填写11位数字电话' },
         ],
         code: [
           { required: true, message: '请填写验证码' },
-          { pattern: /^\d{6}$/, message: '请填写6位数字密码' },
+          // { pattern: /^\d{6}$/, message: '请填写6位数字密码' },
         ],
       },
     };
   },
   methods: {
     async onSubmit() {
-      this.$toast.loading({
-        message: '加载中...',
-        forbidClick: true,
+      const [err, res] = await errorHandler(login({ mobile: this.mobile, code: this.code }), {
+        errmsg: '登录失败，请重试',
       });
-      try {
-        const res = await login({ mobile: this.mobile, code: this.code });
-        this.$store.commit('setItem', res.data);
-        // console.log(res);
-        // window.localStorage.setItem('token', res.data)
-        // this.$router.push('/user')
-        this.$toast.success('登录成功');
-      } catch (err) {
-        console.log(err);
-        this.$toast.success(err.message);
-      }
+      console.log(res);
+      // try {
+      //   const res = await login({ mobile: this.mobile, code: this.code }).catch((err) => {
+      //     console.log(111, err.response);
+      //   });
+      // } catch (err) {
+      //   console.log(22, err);
+      // }
+      // this.$toast.loading({
+      //   message: '加载中...',
+      //   forbidClick: true,
+      // });
+      // try {
+      //   const res = await login({ mobile: this.mobile, code: this.code });
+      //   this.$store.commit('setItem', res.data);
+      //   // console.log(res);
+      //   // window.localStorage.setItem('token', res.data)
+      //   // this.$router.push('/user')
+      //   this.$toast.success('登录成功');
+      // } catch (err) {
+      //   console.log(err);
+      //   this.$toast.success(err.message);
+      // }
     },
     sendCode() {
       this.$refs.loginForm.validate('mobile').then(async (res) => {
