@@ -20,6 +20,8 @@ request.interceptors.response.use(
     return response.data;
   },
   function(error) {
+    // 响应失败的拦截器，上面是请求成功的拦截器
+    console.log(error);
     return Promise.reject(error);
   }
 );

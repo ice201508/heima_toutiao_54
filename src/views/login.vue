@@ -2,7 +2,7 @@
   <div>
     <van-nav-bar title="登录">
       <template #left>
-        <van-icon name="cross" size="18" />
+        <van-icon name="cross" size="18" @click="$router.back()" />
       </template>
     </van-nav-bar>
     <!-- 登录表单 -->

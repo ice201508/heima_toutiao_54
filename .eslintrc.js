@@ -46,5 +46,6 @@ module.exports = {
     eqeqeq: 0,
     camelcase: 0,
     'object-shorthand': 0,
+    'no-unneeded-ternary': 0,
   },
 };

@@ -1,18 +1,20 @@
+import config from '@/config/url.config';
+
 export const setItem = function(data) {
   let tmp = null;
   if (typeof data === 'object') {
     tmp = JSON.stringify(data);
   }
-  localStorage.setItem('token', tmp);
+  localStorage.setItem(config.toutiao_token, tmp);
 };
 
 export const getItem = function() {
-  let tmp = localStorage.getItem('token');
+  let tmp = localStorage.getItem(config.toutiao_token);
 
   try {
-    return localStorage.getItem('token') ? localStorage.getItem('token') : '';
+    return tmp ? tmp : '';
   } catch (err) {
     console.log(err);
-    return localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : '';
+    return tmp ? JSON.parse(tmp) : '';
   }
 };
