@@ -1,10 +1,15 @@
 <template>
-  <div v-if="!token" class="home-contain">
-    <div class="box-1">
+  <div class="home-contain">
+    <div class="box-1" v-if="!token">
       <div class="login-box" @click="goLogin">
         <!-- <div class="icon"></div> -->
         <img src="../assets/mobile.png" alt="" />
         <div class="text">登录/注册</div>
+      </div>
+    </div>
+    <div class="box-1" v-else>
+      <div class="login-box" @click="goLogin">
+        123
       </div>
     </div>
     <div class="box-2">
@@ -34,9 +39,6 @@
         <van-cell title="单元格" is-link />
       </van-cell-group>
     </div>
-  </div>
-  <div v-else>
-    登录完成
   </div>
 </template>
 

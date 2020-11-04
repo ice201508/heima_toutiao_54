@@ -30,7 +30,7 @@
           <van-button
             native-type="button"
             v-if="!isCountDownShow"
-            size="small"
+            size="mini"
             type="primary"
             @click="sendCode"
             >发送验证码</van-button
@@ -55,8 +55,8 @@ export default {
   name: 'Login',
   data() {
     return {
-      mobile: '139111111',
-      code: '24681',
+      mobile: '13911111111',
+      code: '246810',
       isCountDownShow: false,
       userFormRules: {
         mobile: [
@@ -75,7 +75,10 @@ export default {
       const [err, res] = await errorHandler(login({ mobile: this.mobile, code: this.code }), {
         errmsg: '登录失败，请重试',
       });
-      console.log(res);
+      if (!err) {
+        this.$store.commit('setItem', res.data);
+        this.$router.push('/');
+      }
       // try {
       //   const res = await login({ mobile: this.mobile, code: this.code }).catch((err) => {
       //     console.log(111, err.response);
