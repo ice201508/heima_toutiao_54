@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <!-- 导航栏 -->
-    <van-nav-bar class="nav-bar">
+    <van-nav-bar class="nav-bar" fixed>
       <van-button slot="title" round block class="nav-btn">
         <van-icon name="search"></van-icon>
         <span>搜索</span>
@@ -88,6 +88,9 @@ export default {
   }
   /deep/.my-tabs {
     .van-tabs__wrap {
+      position: fixed;
+      top: 92px;
+      z-index: 2;
       .van-tabs__nav {
         padding: 0;
         .van-tab {
@@ -120,6 +123,9 @@ export default {
           }
         }
       }
+    }
+    .van-tabs__content {
+      padding-top: 180px;
     }
   }
 }
