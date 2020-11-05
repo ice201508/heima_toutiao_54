@@ -22,15 +22,27 @@
         <article-list :channel="item" />
       </van-tab>
       <div class="hanberge-btn" slot="nav-right">
-        <i class="iconfont icongengduo"></i>
+        <i @click="channelEditPop = true" class="iconfont icongengduo"></i>
       </div>
     </van-tabs>
+
+    <van-popup
+      v-model="channelEditPop"
+      round
+      closeable
+      close-icon-position="top-left"
+      position="bottom"
+      :style="{ height: '98%' }"
+    >
+      <channel-edit />
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { userChannels } from '@/api/users';
 import ArticleList from '@/components/article/article-list.vue';
+import ChannelEdit from '@/components/channel-edit.vue';
 
 export default {
   name: 'Home',
@@ -38,6 +50,7 @@ export default {
     return {
       active: 0,
       channels: [],
+      channelEditPop: false,
     };
   },
   created() {
@@ -45,6 +58,7 @@ export default {
   },
   components: {
     ArticleList,
+    ChannelEdit,
   },
   methods: {
     async getChannels() {
