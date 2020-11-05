@@ -2,7 +2,7 @@
   <div class="article-list">
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh" :success-text="refreshSuccessText">
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-        <van-cell v-for="(item, index) in articleList" :key="index" :title="item.title" />
+        <article-list-item v-for="(item, index) in articleList" :key="index" :articleItem="item" />
       </van-list>
     </van-pull-refresh>
   </div>
@@ -10,12 +10,13 @@
 
 <script>
 import { recommonArticle } from '@/api/users';
+import ArticleListItem from '@/components/article/article-list-item.vue';
 
 export default {
   name: 'ArticleList',
   props: ['channel'],
-  created() {
-    console.log(this.channel);
+  components: {
+    ArticleListItem,
   },
   data() {
     return {
