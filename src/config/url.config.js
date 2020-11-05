@@ -9,4 +9,6 @@ export default {
   login: 'authorizations',
   // 获取验证码
   smsCodes: 'sms/codes/',
+  // 获取频道列表
+  userChannels: 'user/channels',
 };

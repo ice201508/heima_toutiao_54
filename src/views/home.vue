@@ -1,172 +1,113 @@
 <template>
-  <div class="home-contain">
-    <div class="box-1" v-if="!token">
-      <div class="login-box" @click="goLogin">
-        <!-- <div class="icon"></div> -->
-        <img src="../assets/mobile.png" alt="" />
-        <div class="text">登录/注册</div>
+  <div class="home">
+    <!-- 导航栏 -->
+    <van-nav-bar class="nav-bar">
+      <van-button slot="title" round block class="nav-btn">
+        <van-icon name="search"></van-icon>
+        <span>搜索</span>
+      </van-button>
+    </van-nav-bar>
+
+    <!-- 频道列表 -->
+    <van-tabs class="my-tabs" v-model="active" border animated swipeable>
+      <van-tab title="标签 1">内容 1</van-tab>
+      <van-tab title="标签 2">内容 2</van-tab>
+      <van-tab title="标签 3">内容 3</van-tab>
+      <van-tab title="标签 4">内容 4</van-tab>
+      <van-tab title="标签 3">内容 3</van-tab>
+      <van-tab title="标签 4">内容 4</van-tab>
+      <div class="hanberge-btn" slot="nav-right">
+        <i class="iconfont icongengduo"></i>
       </div>
-    </div>
-    <div class="box-4" v-else>
-      <div class="b4-top">
-        <div class="b4t-left">
-          <img src="@/assets/mobile.png" />
-          <span>我的姓名</span>
-        </div>
-        <div class="b4t-right">
-          <van-button type="default" round size="mini">编辑资料</van-button>
-        </div>
-      </div>
-      <div class="b4-bottom">
-        <div class="item">
-          <div>64422</div>
-          <div>头条</div>
-        </div>
-        <div class="item">
-          <div>64422</div>
-          <div>头条</div>
-        </div>
-        <div class="item">
-          <div>64422</div>
-          <div>头条</div>
-        </div>
-        <div class="item">
-          <div>64422</div>
-          <div>头条</div>
-        </div>
-      </div>
-    </div>
-    <div class="box-2">
-      <van-grid :column-num="2">
-        <van-grid-item icon="photo-o" text="文字">
-          <template slot="text">
-            收藏
-          </template>
-          <template #icon>
-            <van-icon name="chat-o" color="#eb5253" />
-          </template>
-        </van-grid-item>
-        <van-grid-item icon="photo-o" text="文字">
-          <template v-slot:text>
-            历史
-          </template>
-          <template #icon>
-            <van-icon name="chat-o" color="#eb5253" />
-          </template>
-        </van-grid-item>
-      </van-grid>
-    </div>
-    <div class="box-3">
-      <van-cell-group>
-        <van-cell title="单元格" is-link />
-        <van-cell title="单元格" is-link />
-        <van-cell title="单元格" is-link />
-      </van-cell-group>
-    </div>
-    <div class="logout" v-if="token">
-      <van-button type="primary" block @click="logout">退出登录</van-button>
-    </div>
+    </van-tabs>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { userChannels } from '@/api/users';
 
 export default {
   name: 'Home',
-  methods: {
-    goLogin() {
-      this.$router.push('/login');
-    },
-    logout() {
-      this.$store.commit('setItem', '');
-      this.$router.push('/login');
-    },
+  data() {
+    return {
+      active: 0,
+      channels: [],
+    };
   },
-  computed: {
-    ...mapState(['token']),
+  created() {
+    this.getChannels();
+  },
+  methods: {
+    async getChannels() {
+      const res = await userChannels();
+      this.channels = res.data.channels;
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
-.home-contain {
-  .box-1 {
-    height: 360px;
-    background: url('../assets/banner.png');
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    .text {
-      font-size: 30px;
-      color: #fff;
-    }
-    img {
-      width: 100px;
-      height: 100px;
-    }
-    .icon {
-      text-align: center;
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background-color: #fff;
-    }
-  }
-  .box-3 {
-    margin-top: 24px;
-  }
-  .box-4 {
-    height: 360px;
-    background: url('../assets/banner.png');
-    background-size: cover;
-    .b4-top {
-      height: 150px;
-      display: flex;
-      flex-direction: row;
-      padding: 60px 40px 30px;
-      justify-content: space-between;
-      align-items: center;
-      .b4t-left {
-        display: flex;
-        align-items: center;
-        img {
-          width: 100px;
-        }
-        span {
-          margin-left: 20px;
-          color: #fff;
-        }
-      }
-      .b4t-right {
-        .van-button {
-          padding: 0 18px;
+.home {
+  /deep/.nav-bar {
+    background-color: #3296fa;
+    .van-nav-bar__title {
+      max-width: unset;
+      width: 70%;
+      .van-button {
+        height: 60px;
+        border: none;
+        color: #fff;
+        background-color: #5babfb;
+        .van-button__text {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .van-icon-search {
+            color: #fff;
+            font-size: 32px;
+            margin-top: 4px;
+          }
+          span {
+            margin-left: 8px;
+          }
         }
       }
     }
-    .b4-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 40px;
-      text-align: center;
-      color: #fff;
-      .item > div:first-child {
-        font-size: 38px;
-      }
-      .item > div:last-child {
-        font-size: 28px;
-      }
-    }
   }
-  .logout {
-    margin-top: 24px;
-    .van-button {
-      background-color: #fff;
-      border: none;
-      color: #ee0a24;
+  /deep/.my-tabs {
+    .van-tabs__wrap {
+      .van-tabs__nav {
+        padding: 0;
+        .van-tab {
+          width: 200px;
+          height: 88px;
+          border-right: 2px solid #edeff3;
+        }
+        .van-tab:last-child {
+          border-right: none;
+          color: red;
+        }
+        .van-tabs__line {
+          background-color: #3296fa;
+          width: 30px;
+          position: absolute;
+          bottom: 10px;
+        }
+        .hanberge-btn {
+          // 容器是flex布局，项目写宽度不会生效
+          min-width: 33px;
+          height: 82px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: fixed;
+          right: 0;
+          background-color: rgba(255, 255, 255, 0.8);
+          .iconfont {
+            font-size: 33px;
+          }
+        }
+      }
     }
   }
 }

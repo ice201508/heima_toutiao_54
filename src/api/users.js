@@ -25,7 +25,9 @@ export const smsCodes = function(mobile) {
   });
 };
 
-export default {
-  textAjax,
-  login,
+export const userChannels = () => {
+  return request({
+    url: config.userChannels,
+    methods: 'GET',
+  });
 };
