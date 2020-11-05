@@ -9,13 +9,18 @@
     </van-nav-bar>
 
     <!-- 频道列表 -->
-    <van-tabs class="my-tabs" v-model="active" border animated swipeable>
-      <van-tab title="标签 1">内容 1</van-tab>
-      <van-tab title="标签 2">内容 2</van-tab>
-      <van-tab title="标签 3">内容 3</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
-      <van-tab title="标签 3">内容 3</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
+    <van-tabs
+      class="my-tabs"
+      v-model="active"
+      @change="tabChange"
+      :lazy-render="true"
+      border
+      animated
+      swipeable
+    >
+      <van-tab :title="item.name" v-for="item in channels" :key="item.id">
+        <article-list :channel="item" />
+      </van-tab>
       <div class="hanberge-btn" slot="nav-right">
         <i class="iconfont icongengduo"></i>
       </div>
@@ -25,6 +30,7 @@
 
 <script>
 import { userChannels } from '@/api/users';
+import ArticleList from '@/components/article/article-list.vue';
 
 export default {
   name: 'Home',
@@ -37,10 +43,16 @@ export default {
   created() {
     this.getChannels();
   },
+  components: {
+    ArticleList,
+  },
   methods: {
     async getChannels() {
       const res = await userChannels();
       this.channels = res.data.channels;
+    },
+    tabChange(a) {
+      console.log(a);
     },
   },
 };

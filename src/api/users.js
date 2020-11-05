@@ -31,3 +31,11 @@ export const userChannels = () => {
     methods: 'GET',
   });
 };
+
+export const recommonArticle = (params) => {
+  return request({
+    url: config.articles,
+    methods: 'GET',
+    params,
+  });
+};
