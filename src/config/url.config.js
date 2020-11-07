@@ -15,4 +15,8 @@ export default {
   userChannels: '/app/v1_0/user/channels',
   // 获取所有频道列表 --- 可以据此推算出推荐频道
   allChannels: '/app/v1_0/channels',
+  // 添加 用户频道
+  addUserChannels: '/app/v1_0/user/channels',
+  // 删除 用户频道
+  deleteUserChannels: '/app/v1_0/user/channels/',
 };

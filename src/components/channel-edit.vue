@@ -35,7 +35,9 @@
 </template>
 
 <script>
-import { allChannelsAjax } from '@/api/users';
+import { allChannelsAjax, addUserChannelsAjax, deleteUserChannelsAjax } from '@/api/users';
+import { mapState } from 'vuex';
+import { setItem } from '@/utils/storage';
 
 export default {
   name: 'channelEdit',
@@ -71,8 +73,35 @@ export default {
     mychannelEdit() {
       this.showEditIcon = !this.showEditIcon;
     },
-    addChannel(val) {
-      this.channels.push(val);
+    async addChannel(val) {
+      if (this.token) {
+        try {
+          await addUserChannelsAjax({
+            id: val.id,
+            seq: this.channels.length,
+          });
+          this.channels.push(val);
+        } catch (err) {
+          this.$toast('添加频道失败');
+        }
+      } else {
+        // 未登录
+        this.channels.push(val);
+        setItem('TOUTIAO_CHANNELS', this.channels);
+      }
+    },
+    async deleteChannel(id) {
+      // 已登录发请求储存在服务器
+      // 未登录储存在本地
+      if (this.token) {
+        try {
+          await deleteUserChannelsAjax(id);
+        } catch (err) {
+          console.dir(err);
+        }
+      } else {
+        setItem('TOUTIAO_CHANNELS', this.channels);
+      }
     },
     changeChannel(val) {
       // 如果编辑状态为true，那么这里的操作就是删除频道
@@ -87,6 +116,7 @@ export default {
           });
         }
         this.channels.splice(index, 1);
+        deleteUserChannelsAjax(val.id);
       } else {
         this.$emit('CHANGE_CHANNEL_EVENT', {
           id: val.id,
@@ -96,6 +126,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(['token']),
     recommendChannel() {
       return this.allChannels.filter((item) => {
         let index = this.channels.findIndex((childItem) => {

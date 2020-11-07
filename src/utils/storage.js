@@ -1,20 +1,17 @@
-import config from '@/config/url.config';
-
-export const setItem = function(data) {
+export const setItem = function(key, data) {
   let tmp = null;
   if (typeof data === 'object') {
     tmp = JSON.stringify(data);
   }
-  localStorage.setItem(config.toutiao_token, tmp);
+  localStorage.setItem(key, tmp);
 };
 
-export const getItem = function() {
-  let tmp = localStorage.getItem(config.toutiao_token);
+export const getItem = function(key) {
+  let tmp = localStorage.getItem(key);
 
   try {
-    return tmp ? tmp : '';
-  } catch (err) {
-    console.log(err);
     return tmp ? JSON.parse(tmp) : '';
+  } catch (err) {
+    return null;
   }
 };

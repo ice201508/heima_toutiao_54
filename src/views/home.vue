@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import { getItem } from '@/utils/storage';
 import { userChannels } from '@/api/users';
 import ArticleList from '@/components/article/article-list.vue';
 import ChannelEdit from '@/components/channel-edit.vue';
@@ -67,8 +69,17 @@ export default {
   },
   methods: {
     async getChannels() {
-      const res = await userChannels();
-      this.channels = res.data.channels;
+      if (this.token) {
+        const res = await userChannels();
+        this.channels = res.data.channels;
+      } else {
+        if (getItem('TOUTIAO_CHANNELS')) {
+          this.channels = getItem('TOUTIAO_CHANNELS');
+        } else {
+          const res = await userChannels();
+          this.channels = res.data.channels;
+        }
+      }
     },
     tabChange(a) {
       // console.log(a);
@@ -78,6 +89,9 @@ export default {
       this.channelEditPop = data.flag;
       console.log(222, this.active);
     },
+  },
+  computed: {
+    ...mapState(['token']),
   },
 };
 </script>

@@ -47,3 +47,22 @@ export const allChannelsAjax = () => {
     methods: 'GET',
   });
 };
+
+// 添加用户频道接口
+export const addUserChannelsAjax = (channels) => {
+  return request({
+    url: config.addUserChannels,
+    method: 'PATCH',
+    data: {
+      channels: [channels],
+    },
+  });
+};
+
+// 删除用户频道接口
+export const deleteUserChannelsAjax = (id) => {
+  return request({
+    url: config.deleteUserChannels + id,
+    method: 'DELETE',
+  });
+};
