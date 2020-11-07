@@ -18,7 +18,7 @@
       animated
       swipeable
     >
-      <van-tab :title="item.name" v-for="item in channels" :key="item.id">
+      <van-tab :name="item.id" :title="item.name" v-for="item in channels" :key="item.id">
         <article-list :channel="item" />
       </van-tab>
       <div class="hanberge-btn" slot="nav-right">
@@ -34,7 +34,12 @@
       position="bottom"
       :style="{ height: '98%' }"
     >
-      <channel-edit v-if="channelEditPop" :active="active" :channels="channels" />
+      <channel-edit
+        v-if="channelEditPop"
+        :active="active"
+        :channels="channels"
+        @CHANGE_CHANNEL_EVENT="getChannelFromSon"
+      />
     </van-popup>
   </div>
 </template>
@@ -66,7 +71,12 @@ export default {
       this.channels = res.data.channels;
     },
     tabChange(a) {
-      console.log(a);
+      // console.log(a);
+    },
+    getChannelFromSon(data) {
+      this.active = data.id;
+      this.channelEditPop = data.flag;
+      console.log(222, this.active);
     },
   },
 };

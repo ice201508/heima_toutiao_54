@@ -24,7 +24,15 @@ export const smsCodes = function(mobile) {
     method: 'GET',
   });
 };
+export const recommonArticle = (params) => {
+  return request({
+    url: config.articles,
+    methods: 'GET',
+    params,
+  });
+};
 
+// 获取用户频道的接口
 export const userChannels = () => {
   return request({
     url: config.userChannels,
@@ -32,10 +40,10 @@ export const userChannels = () => {
   });
 };
 
-export const recommonArticle = (params) => {
+// 获取所有频道接口
+export const allChannelsAjax = () => {
   return request({
-    url: config.articles,
+    url: config.allChannels,
     methods: 'GET',
-    params,
   });
 };

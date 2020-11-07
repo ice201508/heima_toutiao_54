@@ -3,30 +3,40 @@
     <!-- 我的频道 -->
     <van-cell title="我的频道">
       <template #default>
-        <van-button class="edit-btn" size="mini" type="danger" round plain @click="mychannelEdit"
-          >编辑</van-button
-        >
+        <van-button class="edit-btn" size="mini" type="danger" round plain @click="mychannelEdit">{{
+          showEditIcon ? '完成' : '编辑'
+        }}</van-button>
       </template>
     </van-cell>
     <van-grid :gutter="10" direction="horizontal">
       <van-grid-item
         class="my-channel"
-        :class="{ 'show-edit-icon': showEditIcon, active: item.id == active }"
+        :class="{ 'show-edit-icon': showEditIcon && item.id != 0, active: item.id == active }"
         v-for="item in channels"
         :key="item.id"
         :text="item.name"
         icon="clear"
+        @click="changeChannel(item)"
       />
     </van-grid>
     <!-- 推荐频道 -->
     <van-cell title="推荐频道"></van-cell>
     <van-grid :gutter="10" direction="horizontal">
-      <van-grid-item class="recommend-channel" v-for="i in 13" :key="i" text="文字" icon="plus" />
+      <van-grid-item
+        class="recommend-channel"
+        v-for="item in recommendChannel"
+        :key="item.id"
+        :text="item.name"
+        icon="plus"
+        @click="addChannel(item)"
+      />
     </van-grid>
   </div>
 </template>
 
 <script>
+import { allChannelsAjax } from '@/api/users';
+
 export default {
   name: 'channelEdit',
   // props: ['channels']
@@ -36,21 +46,63 @@ export default {
       required: true,
     },
     active: {
-      type: Number,
+      type: [Number, String],
       required: true,
     },
   },
   data() {
     return {
       showEditIcon: false,
+      allChannels: [],
     };
   },
   created() {
-    console.log(this.channels);
+    this.getAllChannels();
   },
   methods: {
+    async getAllChannels() {
+      try {
+        const res = await allChannelsAjax();
+        this.allChannels = res.data.channels;
+      } catch (err) {
+        this.$toast('所有频道请求失败，请重试');
+      }
+    },
     mychannelEdit() {
       this.showEditIcon = !this.showEditIcon;
+    },
+    addChannel(val) {
+      this.channels.push(val);
+    },
+    changeChannel(val) {
+      // 如果编辑状态为true，那么这里的操作就是删除频道
+      // 如果编辑的状态为false，那么这里的操作就是切换频道
+      if (this.showEditIcon) {
+        let index = this.channels.findIndex((item) => item.id == val.id);
+        if (index == 0) return null;
+        if (index == this.channels.length - 1 && this.active == val.id) {
+          this.$emit('CHANGE_CHANNEL_EVENT', {
+            id: this.channels[index - 1].id,
+            flag: true,
+          });
+        }
+        this.channels.splice(index, 1);
+      } else {
+        this.$emit('CHANGE_CHANNEL_EVENT', {
+          id: val.id,
+          flag: false,
+        });
+      }
+    },
+  },
+  computed: {
+    recommendChannel() {
+      return this.allChannels.filter((item) => {
+        let index = this.channels.findIndex((childItem) => {
+          return item.id === childItem.id;
+        });
+        return index === -1;
+      });
     },
   },
 };

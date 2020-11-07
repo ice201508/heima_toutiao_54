@@ -9,8 +9,10 @@ export default {
   login: '/app/v1_0/authorizations',
   // 获取验证码
   smsCodes: '/app/v1_0/sms/codes/',
-  // 获取频道列表
-  userChannels: '/app/v1_0/user/channels',
   // 获取频道新闻推荐
   articles: '/app/v1_1/articles',
+  // 获取我的频道列表
+  userChannels: '/app/v1_0/user/channels',
+  // 获取所有频道列表 --- 可以据此推算出推荐频道
+  allChannels: '/app/v1_0/channels',
 };
