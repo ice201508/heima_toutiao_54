@@ -3,11 +3,20 @@
     <!-- 我的频道 -->
     <van-cell title="我的频道">
       <template #default>
-        <van-button class="edit-btn" size="mini" type="danger" round plain>编辑</van-button>
+        <van-button class="edit-btn" size="mini" type="danger" round plain @click="mychannelEdit"
+          >编辑</van-button
+        >
       </template>
     </van-cell>
     <van-grid :gutter="10" direction="horizontal">
-      <van-grid-item class="my-channel" v-for="i in 13" :key="i" text="文字" icon="clear" />
+      <van-grid-item
+        class="my-channel"
+        :class="{ 'show-edit-icon': showEditIcon, active: item.id == active }"
+        v-for="item in channels"
+        :key="item.id"
+        :text="item.name"
+        icon="clear"
+      />
     </van-grid>
     <!-- 推荐频道 -->
     <van-cell title="推荐频道"></van-cell>
@@ -20,6 +29,30 @@
 <script>
 export default {
   name: 'channelEdit',
+  // props: ['channels']
+  props: {
+    channels: {
+      type: Array,
+      required: true,
+    },
+    active: {
+      type: Number,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      showEditIcon: false,
+    };
+  },
+  created() {
+    console.log(this.channels);
+  },
+  methods: {
+    mychannelEdit() {
+      this.showEditIcon = !this.showEditIcon;
+    },
+  },
 };
 </script>
 
@@ -43,6 +76,13 @@ export default {
         z-index: 2;
         font-size: 26px;
         color: #ccc;
+        display: none;
+      }
+      &.show-edit-icon .van-grid-item__icon {
+        display: block;
+      }
+      &.active .van-grid-item__text {
+        color: red;
       }
     }
     .recommend-channel {

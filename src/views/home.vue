@@ -34,7 +34,7 @@
       position="bottom"
       :style="{ height: '98%' }"
     >
-      <channel-edit />
+      <channel-edit v-if="channelEditPop" :active="active" :channels="channels" />
     </van-popup>
   </div>
 </template>
@@ -102,7 +102,7 @@ export default {
   }
   /deep/.my-tabs {
     .van-tabs__wrap {
-      position: fixed;
+      // position: fixed;
       top: 92px;
       z-index: 2;
       .van-tabs__nav {
@@ -139,7 +139,7 @@ export default {
       }
     }
     .van-tabs__content {
-      padding-top: 180px;
+      padding-top: 90px;
     }
   }
 }
