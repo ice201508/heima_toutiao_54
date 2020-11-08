@@ -2,7 +2,7 @@
   <div class="home">
     <!-- 导航栏 -->
     <van-nav-bar class="nav-bar" fixed>
-      <van-button slot="title" round block class="nav-btn">
+      <van-button to="/search" slot="title" round block class="nav-btn">
         <van-icon name="search"></van-icon>
         <span>搜索</span>
       </van-button>
