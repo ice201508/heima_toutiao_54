@@ -9,18 +9,19 @@
         clearable
         placeholder="请输入搜索关键词"
         @search="onSearch"
+        @focus="onFocus"
         @cancel="onCancel"
       />
     </form>
 
     <!-- 搜索历史 -->
-    <search-history />
+    <search-history v-if="!searchText" />
 
     <!-- 搜索建议 -->
-    <search-suggestion />
+    <search-suggestion v-if="searchText && !isResultShow" />
 
     <!-- 搜索结果 -->
-    <search-result />
+    <search-result v-if="isResultShow" />
   </div>
 </template>
 
@@ -34,6 +35,7 @@ export default {
   data() {
     return {
       searchText: '',
+      isResultShow: false,
     };
   },
   components: {
@@ -44,9 +46,15 @@ export default {
   methods: {
     onSearch(val) {
       this.$toast(val);
+      this.isResultShow = true;
     },
     onCancel() {
       this.$toast('取消');
+      this.isResultShow = false;
+      this.$router.back();
+    },
+    onFocus() {
+      this.isResultShow = false;
     },
   },
 };
@@ -54,8 +62,16 @@ export default {
 
 <style lang="less" scoped>
 .search {
+  padding-top: 108px;
   .van-search__action {
     color: #fff;
+  }
+  .van-search {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
   }
 }
 </style>

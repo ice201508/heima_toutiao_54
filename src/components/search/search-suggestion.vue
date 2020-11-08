@@ -1,13 +1,6 @@
 <template>
   <div>
-    <van-cell>
-      <template #title>
-        <div>
-          <van-icon name="search" />
-          <span>搜索建议</span>
-        </div>
-      </template>
-    </van-cell>
+    <van-cell title="搜索建议" icon="search" />
   </div>
 </template>
 
