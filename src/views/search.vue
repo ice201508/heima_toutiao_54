@@ -18,7 +18,7 @@
     <search-history v-if="!searchText" />
 
     <!-- 搜索建议 -->
-    <search-suggestion v-if="searchText && !isResultShow" />
+    <search-suggestion v-if="searchText && !isResultShow" :searchText="searchText" />
 
     <!-- 搜索结果 -->
     <search-result v-if="isResultShow" />

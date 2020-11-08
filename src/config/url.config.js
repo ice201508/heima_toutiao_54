@@ -19,4 +19,8 @@ export default {
   addUserChannels: '/app/v1_0/user/channels',
   // 删除 用户频道
   deleteUserChannels: '/app/v1_0/user/channels/',
+
+  // =========================
+  // 搜索建议接口
+  searchSuggestion: '/app/v1_0/suggestion',
 };

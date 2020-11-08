@@ -7,7 +7,6 @@ const request = axios.create({
   // baseURL: 'http://ttapi.research.itcast.cn/app/v1_0/',
   baseURL: config.baseURL,
 });
-console.log(config.toutiao_token, getItem(config.toutiao_token));
 
 request.interceptors.request.use(
   function(configAxios) {

@@ -66,3 +66,12 @@ export const deleteUserChannelsAjax = (id) => {
     method: 'DELETE',
   });
 };
+
+// 获取搜索建议的接口
+export const searchSuggestionAjax = (params) => {
+  return request({
+    url: config.searchSuggestion,
+    method: 'GET',
+    params,
+  });
+};
