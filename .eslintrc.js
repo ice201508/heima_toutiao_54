@@ -48,5 +48,7 @@ module.exports = {
     'object-shorthand': 0,
     'no-unneeded-ternary': 0,
     'no-lonely-if': 0,
+    'line-break': 0,
+    'operator-linebreak': 0,
   },
 };

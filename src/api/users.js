@@ -27,7 +27,7 @@ export const smsCodes = function(mobile) {
 export const recommonArticle = (params) => {
   return request({
     url: config.articles,
-    methods: 'GET',
+    method: 'GET',
     params,
   });
 };
@@ -36,7 +36,7 @@ export const recommonArticle = (params) => {
 export const userChannels = () => {
   return request({
     url: config.userChannels,
-    methods: 'GET',
+    method: 'GET',
   });
 };
 
@@ -44,7 +44,7 @@ export const userChannels = () => {
 export const allChannelsAjax = () => {
   return request({
     url: config.allChannels,
-    methods: 'GET',
+    method: 'GET',
   });
 };
 

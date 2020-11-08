@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from '@/store';
 import config from '@/config/url.config';
 import { getItem } from '@/utils/storage';
 
@@ -6,11 +7,13 @@ const request = axios.create({
   // baseURL: 'http://ttapi.research.itcast.cn/app/v1_0/',
   baseURL: config.baseURL,
 });
-console.log(getItem(config.toutiao_token).token);
+console.log(config.toutiao_token, getItem(config.toutiao_token));
 
 request.interceptors.request.use(
   function(configAxios) {
-    configAxios.headers.Authorization = 'Bearer ' + getItem(config.toutiao_token)?.token;
+    if (getItem(config.toutiao_token)) {
+      configAxios.headers.Authorization = 'Bearer ' + getItem(config.toutiao_token).token;
+    }
     return configAxios;
   },
   function(error) {
@@ -24,7 +27,29 @@ request.interceptors.response.use(
   },
   function(error) {
     // 响应失败的拦截器，上面是请求成功的拦截器
-    // console.log(error.response);
+    console.dir(error.response);
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      error.response.statusText == 'UNAUTHORIZED'
+    ) {
+      console.log(123);
+      axios({
+        url: 'http://ttapi.research.itcast.cn/app/v1_0/authorizations',
+        method: 'PUT',
+        headers: {
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: 'Bearer ' + getItem(config.toutiao_token).refresh_token,
+        },
+      }).then((res) => {
+        store.commit('setItem', {
+          token: res.data.data.token,
+          refresh_token: getItem(config.toutiao_token).refresh_token,
+        });
+        console.log(111, res, error.config);
+        return request(error.config);
+      });
+    }
     return Promise.reject(error);
   }
 );
