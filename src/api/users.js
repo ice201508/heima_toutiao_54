@@ -75,3 +75,12 @@ export const searchSuggestionAjax = (params) => {
     params,
   });
 };
+
+// 获取搜索建议的接口
+export const searchResultAjax = (params) => {
+  return request({
+    url: config.searchResult,
+    method: 'GET',
+    params,
+  });
+};

@@ -23,4 +23,6 @@ export default {
   // =========================
   // 搜索建议接口
   searchSuggestion: '/app/v1_0/suggestion',
+  // 获取用户搜索结果
+  searchResult: '/app/v1_0/search',
 };

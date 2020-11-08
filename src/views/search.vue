@@ -18,10 +18,14 @@
     <search-history v-if="!searchText" />
 
     <!-- 搜索建议 -->
-    <search-suggestion v-if="searchText && !isResultShow" :searchText="searchText" />
+    <search-suggestion
+      v-if="searchText && !isResultShow"
+      :searchText="searchText"
+      @GO_RESULT_EVENT="getFromSuggestion"
+    />
 
     <!-- 搜索结果 -->
-    <search-result v-if="isResultShow" />
+    <search-result v-if="isResultShow" :searchText="searchText" />
   </div>
 </template>
 
@@ -55,6 +59,10 @@ export default {
     },
     onFocus() {
       this.isResultShow = false;
+    },
+    getFromSuggestion(e) {
+      this.searchText = e;
+      this.isResultShow = true;
     },
   },
 };

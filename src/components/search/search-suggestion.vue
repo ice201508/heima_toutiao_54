@@ -1,6 +1,11 @@
 <template>
   <div class="search-suggestion">
-    <van-cell v-for="(item, index) in suggestionList" :key="index" icon="search">
+    <van-cell
+      v-for="(item, index) in suggestionList"
+      :key="index"
+      icon="search"
+      @click="goResult(item)"
+    >
       <div slot="title" v-html="highlightKeyword(item)"></div>
     </van-cell>
   </div>
@@ -29,6 +34,9 @@ export default {
       let regexp = new RegExp(this.searchText, 'ig');
 
       return val.replace(regexp, str);
+    },
+    goResult(val) {
+      this.$emit('GO_RESULT_EVENT', val);
     },
   },
   watch: {
