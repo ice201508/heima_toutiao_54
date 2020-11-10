@@ -3,7 +3,10 @@
     <van-nav-bar title="黑马头条" left-arrow @click-left="$router.back()" />
 
     <!-- 文章详情 -->
-    <div class="detail" v-if="articleDetail">
+    <div class="detail-error" v-if="!isLoading">
+      <van-loading size="24px" vertical>加载中1...</van-loading>
+    </div>
+    <div class="detail" v-else-if="isLoading && articleDetail">
       <div class="d-title">{{ articleDetail.title }}</div>
       <div class="d-qita clearfix">
         <van-image class="img-btn" round fit="cover" :src="articleDetail.aut_photo" />
@@ -21,8 +24,11 @@
       </div>
       <div class="d-detail" v-html="articleDetail.content"></div>
     </div>
-    <div class="detail-error" v-else>
-      <van-loading size="24px" vertical>加载中1...</van-loading>
+    <div v-else-if="isLoading && errorStatus == 404">
+      <van-empty image="error" description="文章没有找到" />
+    </div>
+    <div v-else>
+      <van-empty image="network" description="网络失败" />
     </div>
 
     <!-- 评论部分 -->
@@ -62,6 +68,8 @@ export default {
   data() {
     return {
       articleDetail: null,
+      isLoading: false,
+      errorStatus: 0,
     };
   },
   created() {
@@ -69,8 +77,16 @@ export default {
   },
   methods: {
     async getArticleDetails() {
-      const res = await articleDetailAjax(this.articleId);
-      this.articleDetail = res.data;
+      try {
+        // throw new Error('自己抛出一个错误');
+        const res = await articleDetailAjax(this.articleId);
+        this.articleDetail = res.data;
+      } catch (err) {
+        if (err.response && err.response.status === 404) {
+          this.errorStatus = 404;
+        }
+      }
+      this.isLoading = true;
     },
   },
 };
@@ -122,7 +138,7 @@ export default {
   }
 }
 .detail-error {
-  height: 80vh;
+  height: 93vh;
   display: flex;
   justify-content: center;
   align-items: center;
