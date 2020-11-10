@@ -84,3 +84,11 @@ export const searchResultAjax = (params) => {
     params,
   });
 };
+
+// 获取文章详情
+export const articleDetailAjax = (article_id) => {
+  return request({
+    url: config.articleDetail + article_id,
+    method: 'GET',
+  });
+};

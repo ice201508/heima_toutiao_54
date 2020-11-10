@@ -25,4 +25,7 @@ export default {
   searchSuggestion: '/app/v1_0/suggestion',
   // 获取用户搜索结果
   searchResult: '/app/v1_0/search',
+
+  // 获取文章详情
+  articleDetail: '/app/v1_0/articles/',
 };

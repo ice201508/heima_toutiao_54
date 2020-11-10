@@ -2,7 +2,12 @@
   <div class="article-list">
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh" :success-text="refreshSuccessText">
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-        <article-list-item v-for="(item, index) in articleList" :key="index" :articleItem="item" />
+        <article-list-item
+          v-for="(item, index) in articleList"
+          :key="index"
+          :articleItem="item"
+          @click.native="goArticleDetail(item)"
+        />
       </van-list>
     </van-pull-refresh>
   </div>
@@ -72,6 +77,9 @@ export default {
       this.timestamp = Date.now();
       this.articleList = [];
       this.onLoad();
+    },
+    goArticleDetail(item) {
+      this.$router.push('/article/' + item.art_id);
     },
   },
 };

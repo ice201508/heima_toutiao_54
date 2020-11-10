@@ -13,6 +13,15 @@ const routes = [
     component: () => import('@/views/login'),
   },
   {
+    path: '/search',
+    component: () => import('@/views/search'),
+  },
+  {
+    path: '/article/:articleId',
+    props: true,
+    component: () => import('@/views/article'),
+  },
+  {
     path: '/',
     component: () => import('@/views/layout'),
     children: [
@@ -31,10 +40,6 @@ const routes = [
       {
         path: 'my',
         component: () => import('@/views/my'),
-      },
-      {
-        path: 'search',
-        component: () => import('@/views/search'),
       },
     ],
   },
