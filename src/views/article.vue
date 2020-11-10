@@ -22,7 +22,7 @@
           >{{ articleDetail.is_followed ? '已关注' : '关注' }}</van-button
         >
       </div>
-      <div class="d-detail markdown-body" v-html="articleDetail.content"></div>
+      <div ref="articleDetail" class="d-detail markdown-body" v-html="articleDetail.content"></div>
     </div>
     <div v-else-if="isLoading && errorStatus == 404">
       <van-empty image="error" description="文章没有找到" />
@@ -59,6 +59,7 @@
 
 <script>
 import { articleDetailAjax } from '@/api/users';
+import { ImagePreview } from 'vant';
 
 export default {
   name: 'Article',
@@ -97,12 +98,31 @@ export default {
         // throw new Error('自己抛出一个错误');
         const res = await articleDetailAjax(this.articleId);
         this.articleDetail = res.data;
+
+        this.$nextTick(() => {
+          this.preview();
+        });
       } catch (err) {
         if (err.response && err.response.status === 404) {
           this.errorStatus = 404;
         }
       }
       this.isLoading = true;
+    },
+    preview() {
+      const el = this.$refs.articleDetail;
+      let imgArr = [];
+      el.querySelectorAll('img').forEach((item, index) => {
+        // console.log(item.src, index);
+        imgArr.push(item.src);
+        item.addEventListener('click', function() {
+          ImagePreview({
+            images: imgArr,
+            // closeable: true,
+            startPosition: index,
+          });
+        });
+      });
     },
   },
 };
