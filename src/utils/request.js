@@ -1,11 +1,22 @@
 import axios from 'axios';
+import JsonBigint from 'json-bigint';
 import store from '@/store';
 import config from '@/config/url.config';
 import { getItem } from '@/utils/storage';
+import router from '../router';
 
 const request = axios.create({
   // baseURL: 'http://ttapi.research.itcast.cn/app/v1_0/',
   baseURL: config.baseURL,
+  transformResponse: [
+    function(data) {
+      try {
+        return JsonBigint.parse(data);
+      } catch (err) {
+        return data;
+      }
+    },
+  ],
 });
 
 request.interceptors.request.use(
@@ -46,6 +57,7 @@ request.interceptors.response.use(
           refresh_token: getItem(config.toutiao_token).refresh_token,
         });
         console.log(111, res, error.config);
+        router.go(0);
         return request(error.config);
       });
     }
