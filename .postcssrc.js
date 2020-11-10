@@ -9,6 +9,7 @@ module.exports = {
         return res.file.indexOf('vant') === -1 ? 75 : 37.5;
       },
       propList: ['*'],
+      exclude: 'github-markdown',
     },
   },
 };

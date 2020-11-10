@@ -22,7 +22,7 @@
           >{{ articleDetail.is_followed ? '已关注' : '关注' }}</van-button
         >
       </div>
-      <div class="d-detail" v-html="articleDetail.content"></div>
+      <div class="d-detail markdown-body" v-html="articleDetail.content"></div>
     </div>
     <div v-else-if="isLoading && errorStatus == 404">
       <van-empty image="error" description="文章没有找到" />
@@ -48,9 +48,12 @@
         <van-icon name="good-job-o" v-else />
       </div>
       <div>
-        <van-icon name="share-o" />
+        <van-icon name="share-o" @click="showShare = true" />
       </div>
     </div>
+
+    <!-- 分享结构 -->
+    <van-share-sheet v-model="showShare" title="立即分享给好友" :options="options" />
   </div>
 </template>
 
@@ -70,6 +73,19 @@ export default {
       articleDetail: null,
       isLoading: false,
       errorStatus: 0,
+      showShare: false,
+      options: [
+        [
+          { name: '微信', icon: 'wechat' },
+          { name: '微博', icon: 'weibo' },
+          { name: 'QQ', icon: 'qq' },
+        ],
+        [
+          { name: '复制链接', icon: 'link' },
+          { name: '分享海报', icon: 'poster' },
+          { name: '二维码', icon: 'qrcode' },
+        ],
+      ],
     };
   },
   created() {
@@ -93,6 +109,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '../style/github-markdown.css';
+
 .article-container {
   .detail {
     height: 84vh;
