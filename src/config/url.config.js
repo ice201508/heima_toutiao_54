@@ -33,4 +33,8 @@ export default {
   userFollowings: '/app/v1_0/user/followings',
   // 取消关注用户
   cancelUserFollowings: '/app/v1_0/user/followings/',
+  // 收藏文章
+  articleCollections: '/app/v1_0/article/collections',
+  // 取消收藏文章
+  cancelArticleCollections: '/app/v1_0/article/collections/',
 };

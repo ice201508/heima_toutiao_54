@@ -46,11 +46,14 @@
         />
       </div>
       <div>
-        <van-icon :name="articleDetail.is_collected ? 'star' : 'star-o'" />
+        <collected
+          :is_collected="articleDetail.is_collected"
+          :userId="articleDetail.art_id"
+          @Collected-Event="collectedEventHandler"
+        />
       </div>
       <div>
-        <van-icon name="good-job-o" v-if="articleDetail.attitude == 1" />
-        <van-icon name="good-job-o" v-else />
+        <attitude :attitude="articleDetail.attitude" :userId="articleDetail.art_id" />
       </div>
       <div>
         <van-icon name="share-o" @click="showShare = true" />
@@ -65,6 +68,8 @@
 <script>
 import { articleDetailAjax, userFollowingsAjax, cancelUserFollowingsAjax } from '@/api/users';
 import { ImagePreview } from 'vant';
+import Collected from '@/components/user/collected.vue';
+import Attitude from '@/components/user/attitude.vue';
 
 export default {
   name: 'Article',
@@ -94,6 +99,10 @@ export default {
         ],
       ],
     };
+  },
+  components: {
+    Collected,
+    Attitude,
   },
   created() {
     this.getArticleDetails();
@@ -156,6 +165,10 @@ export default {
         }
       }
       this.guanzhuLoading = false;
+    },
+    collectedEventHandler(val) {
+      console.log(val);
+      this.articleDetail.is_collected = val;
     },
   },
 };

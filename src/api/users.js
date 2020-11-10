@@ -109,3 +109,20 @@ export const cancelUserFollowingsAjax = (id) => {
     method: 'DELETE',
   });
 };
+
+// 收藏用户
+export const articleCollectionsAjax = (data) => {
+  return request({
+    url: config.articleCollections,
+    method: 'POST',
+    data,
+  });
+};
+
+// 取消收藏用户
+export const cancelArticleCollectionsAjax = (id) => {
+  return request({
+    url: config.cancelArticleCollections + id,
+    method: 'DELETE',
+  });
+};
