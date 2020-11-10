@@ -92,3 +92,20 @@ export const articleDetailAjax = (article_id) => {
     method: 'GET',
   });
 };
+
+// 关注用户
+export const userFollowingsAjax = (data) => {
+  return request({
+    url: config.userFollowings,
+    method: 'POST',
+    data,
+  });
+};
+
+// 取消关注用户
+export const cancelUserFollowingsAjax = (id) => {
+  return request({
+    url: config.cancelUserFollowings + id,
+    method: 'DELETE',
+  });
+};

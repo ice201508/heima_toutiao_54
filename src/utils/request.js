@@ -37,7 +37,7 @@ request.interceptors.response.use(
   },
   function(error) {
     // 响应失败的拦截器，上面是请求成功的拦截器
-    console.dir(error.response);
+    // console.dir(error.response);
     if (
       error.response &&
       error.response.status === 401 &&

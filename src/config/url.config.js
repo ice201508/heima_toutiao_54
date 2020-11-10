@@ -28,4 +28,9 @@ export default {
 
   // 获取文章详情
   articleDetail: '/app/v1_0/articles/',
+
+  // 关注用户
+  userFollowings: '/app/v1_0/user/followings',
+  // 取消关注用户
+  cancelUserFollowings: '/app/v1_0/user/followings/',
 };

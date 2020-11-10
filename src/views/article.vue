@@ -15,11 +15,16 @@
           <div class="author-time">{{ articleDetail.pubdate | relativeFilter }}</div>
         </div>
         <van-button
+          @click="setUserFollowings(articleDetail)"
           class="guanzhu-btn"
           :icon="articleDetail.is_followed ? '' : 'plus'"
+          :loading="guanzhuLoading"
+          :loading-text="articleDetail.is_followed ? '取消关注中...' : '关注中...'"
           :type="articleDetail.is_followed ? 'default' : 'info'"
           round
-          >{{ articleDetail.is_followed ? '已关注' : '关注' }}</van-button
+        >
+          <van-loading v-if="guanzhuLoading"></van-loading>
+          <span v-else>{{ articleDetail.is_followed ? '已关注' : '关注' }}</span></van-button
         >
       </div>
       <div ref="articleDetail" class="d-detail markdown-body" v-html="articleDetail.content"></div>
@@ -58,7 +63,7 @@
 </template>
 
 <script>
-import { articleDetailAjax } from '@/api/users';
+import { articleDetailAjax, userFollowingsAjax, cancelUserFollowingsAjax } from '@/api/users';
 import { ImagePreview } from 'vant';
 
 export default {
@@ -75,6 +80,7 @@ export default {
       isLoading: false,
       errorStatus: 0,
       showShare: false,
+      guanzhuLoading: false,
       options: [
         [
           { name: '微信', icon: 'wechat' },
@@ -123,6 +129,33 @@ export default {
           });
         });
       });
+    },
+    async setUserFollowings(val) {
+      this.guanzhuLoading = true;
+      if (val.is_followed) {
+        try {
+          await cancelUserFollowingsAjax(val.aut_id);
+          // 取消关注成功
+          val.is_followed = false;
+        } catch (err) {
+          if (err.response && err.response.status == 400) {
+            this.$toast('用户不能关注自己');
+          }
+        }
+      } else {
+        try {
+          await userFollowingsAjax({
+            target: val.aut_id,
+          });
+          // 关注成功
+          val.is_followed = true;
+        } catch (err) {
+          if (err.response && err.response.status == 400) {
+            this.$toast('用户不能关注自己');
+          }
+        }
+      }
+      this.guanzhuLoading = false;
     },
   },
 };
