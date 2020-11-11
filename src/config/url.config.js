@@ -37,4 +37,7 @@ export default {
   articleCollections: '/app/v1_0/article/collections',
   // 取消收藏文章
   cancelArticleCollections: '/app/v1_0/article/collections/',
+
+  // 获取评论或者评论回复
+  commentsAndRePlay: '/app/v1_0/comments',
 };

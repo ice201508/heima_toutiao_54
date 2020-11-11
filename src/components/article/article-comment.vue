@@ -1,26 +1,77 @@
 <template>
   <div class="article-comment">
-    <div class="item clearfix" v-for="item in 7" :key="item">
-      <van-image class="one" round fit="cover" src="https://img.yzcdn.cn/vant/cat.jpeg" />
-      <div class="two">
-        <div class="t-title">张三</div>
-        <div class="t-content">评论正文内容部分</div>
-        <div class="time">
-          <span>三天前</span>
-          <van-button type="default" round>回复0</van-button>
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+      <div class="item clearfix" v-for="(item, index) in list" :key="index">
+        <van-image class="one" round fit="cover" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+        <div class="two">
+          <div class="t-title">{{ item.aut_name }}</div>
+          <div class="t-content">{{ item.content }}</div>
+          <div class="time">
+            <span>{{ item.pubdate | relativeFilter }}</span>
+            <van-button type="default" round>回复 {{ item.reply_count }}</van-button>
+          </div>
+        </div>
+        <div class="three">
+          <van-icon name="good-job-o" />
+          <span>赞</span>
         </div>
       </div>
-      <div class="three">
-        <van-icon name="good-job-o" />
-        <span>赞</span>
-      </div>
-    </div>
+    </van-list>
   </div>
 </template>
 
 <script>
+import { commentsAndRePlayAjax } from '@/api/users';
+
 export default {
   name: 'ArticleComment',
+  props: {
+    userId: {
+      type: [Number, String, Object],
+      required: true,
+    },
+  },
+  data() {
+    return {
+      list: [],
+      loading: false,
+      finished: false,
+      totalCount: 0,
+      offset: null,
+    };
+  },
+  created() {
+    console.log(this.userId, typeof this.userId);
+    // this.getCommentsAndRePlay();
+  },
+  methods: {
+    async onLoad() {
+      try {
+        const res = await commentsAndRePlayAjax({
+          type: 'a',
+          source: this.userId.toString(), // 文章id
+          offset: this.offset,
+          limit: 10,
+        });
+        this.list.push(...res.data.results);
+        this.totalCount = res.data.total_count;
+
+        // 加载状态结束
+        this.loading = false;
+
+        // 数据全部加载完毕
+        if (res.data.results.length === 0) {
+          this.finished = true;
+        } else {
+          this.offset = res.data.last_id;
+        }
+      } catch (err) {
+        console.log(123);
+        // 加载状态结束
+        this.loading = true;
+      }
+    },
+  },
 };
 </script>
 

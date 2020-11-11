@@ -29,7 +29,7 @@
       </div>
       <div ref="articleDetail" class="d-detail markdown-body" v-html="articleDetail.content"></div>
       <van-divider>正文结束</van-divider>
-      <article-comment />
+      <article-comment :userId="articleDetail.art_id" />
     </div>
     <div v-else-if="isLoading && errorStatus == 404">
       <van-empty image="error" description="文章没有找到" />

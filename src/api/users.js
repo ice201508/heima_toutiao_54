@@ -126,3 +126,12 @@ export const cancelArticleCollectionsAjax = (id) => {
     method: 'DELETE',
   });
 };
+
+// 获取评论
+export const commentsAndRePlayAjax = (params) => {
+  return request({
+    url: config.commentsAndRePlay,
+    method: 'GET',
+    params,
+  });
+};
