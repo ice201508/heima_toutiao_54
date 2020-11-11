@@ -40,4 +40,8 @@ export default {
 
   // 获取评论或者评论回复
   commentsAndRePlay: '/app/v1_0/comments',
+  // 评论点赞
+  commentLikings: '/app/v1_0/comment/likings',
+  // 取消评论点赞
+  cancelCommentLikings: '/app/v1_0/comment/likings/',
 };

@@ -29,7 +29,7 @@
       </div>
       <div ref="articleDetail" class="d-detail markdown-body" v-html="articleDetail.content"></div>
       <van-divider>正文结束</van-divider>
-      <article-comment :userId="articleDetail.art_id" />
+      <article-comment @on-success-event="totalCount = $event" :userId="articleDetail.art_id" />
     </div>
     <div v-else-if="isLoading && errorStatus == 404">
       <van-empty image="error" description="文章没有找到" />
@@ -40,12 +40,9 @@
 
     <!-- 评论部分 -->
     <div class="comment-bottom" v-if="articleDetail">
-      <div class="cb-write-comment">写评论</div>
+      <div class="cb-write-comment" @click="sendComment = true">写评论</div>
       <div>
-        <van-icon
-          name="comment-o"
-          :badge="articleDetail.recomments.length == 0 ? '' : articleDetail.recomments.length"
-        />
+        <van-icon name="comment-o" :badge="totalCount == 0 ? '' : totalCount" />
       </div>
       <div>
         <collected
@@ -62,6 +59,11 @@
       </div>
     </div>
 
+    <!-- 发表评论结构 -->
+    <van-popup v-model="sendComment" position="bottom" :style="{ height: '20%' }">
+      <article-comment-post />
+    </van-popup>
+
     <!-- 分享结构 -->
     <van-share-sheet v-model="showShare" title="立即分享给好友" :options="options" />
   </div>
@@ -73,6 +75,7 @@ import { ImagePreview } from 'vant';
 import Collected from '@/components/user/collected.vue';
 import Attitude from '@/components/user/attitude.vue';
 import ArticleComment from '@/components/article/article-comment.vue';
+import ArticleCommentPost from '@/components/article/article-comment-post.vue';
 
 export default {
   name: 'Article',
@@ -88,7 +91,9 @@ export default {
       isLoading: false,
       errorStatus: 0,
       showShare: false,
+      totalCount: 0,
       guanzhuLoading: false,
+      sendComment: false,
       options: [
         [
           { name: '微信', icon: 'wechat' },
@@ -107,6 +112,7 @@ export default {
     Collected,
     Attitude,
     ArticleComment,
+    ArticleCommentPost,
   },
   created() {
     this.getArticleDetails();

@@ -135,3 +135,19 @@ export const commentsAndRePlayAjax = (params) => {
     params,
   });
 };
+
+// 获取评论
+export const commentLikingsAjax = (data) => {
+  return request({
+    url: config.commentLikings,
+    method: 'POST',
+    data,
+  });
+};
+// 取消获取评论
+export const cancelCommentLikingsAjax = (id) => {
+  return request({
+    url: config.cancelCommentLikings + id,
+    method: 'DELETE',
+  });
+};
