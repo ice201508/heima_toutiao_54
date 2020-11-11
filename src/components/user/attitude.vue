@@ -13,7 +13,7 @@ export default {
       required: true,
     },
     userId: {
-      type: [Number, String],
+      type: [Number, String, Object],
       required: true,
     },
   },

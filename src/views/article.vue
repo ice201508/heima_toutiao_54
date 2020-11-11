@@ -28,6 +28,8 @@
         >
       </div>
       <div ref="articleDetail" class="d-detail markdown-body" v-html="articleDetail.content"></div>
+      <van-divider>正文结束</van-divider>
+      <article-comment />
     </div>
     <div v-else-if="isLoading && errorStatus == 404">
       <van-empty image="error" description="文章没有找到" />
@@ -70,6 +72,7 @@ import { articleDetailAjax, userFollowingsAjax, cancelUserFollowingsAjax } from 
 import { ImagePreview } from 'vant';
 import Collected from '@/components/user/collected.vue';
 import Attitude from '@/components/user/attitude.vue';
+import ArticleComment from '@/components/article/article-comment.vue';
 
 export default {
   name: 'Article',
@@ -103,6 +106,7 @@ export default {
   components: {
     Collected,
     Attitude,
+    ArticleComment,
   },
   created() {
     this.getArticleDetails();
