@@ -38,7 +38,7 @@ export default {
   // 取消收藏文章
   cancelArticleCollections: '/app/v1_0/article/collections/',
 
-  // 获取评论或者评论回复
+  // 获取评论或者评论回复 -- 也是添加评论 和 添加评论回复的接口
   commentsAndRePlay: '/app/v1_0/comments',
   // 评论点赞
   commentLikings: '/app/v1_0/comment/likings',

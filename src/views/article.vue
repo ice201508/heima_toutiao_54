@@ -29,7 +29,11 @@
       </div>
       <div ref="articleDetail" class="d-detail markdown-body" v-html="articleDetail.content"></div>
       <van-divider>正文结束</van-divider>
-      <article-comment @on-success-event="totalCount = $event" :userId="articleDetail.art_id" />
+      <article-comment
+        :list="allCommentList"
+        @on-success-event="totalCount = $event"
+        :userId="articleDetail.art_id"
+      />
     </div>
     <div v-else-if="isLoading && errorStatus == 404">
       <van-empty image="error" description="文章没有找到" />
@@ -61,7 +65,11 @@
 
     <!-- 发表评论结构 -->
     <van-popup v-model="sendComment" position="bottom" :style="{ height: '20%' }">
-      <article-comment-post />
+      <article-comment-post
+        v-if="sendComment"
+        :userId="articleDetail.art_id"
+        @ADD-COMMENT-EVENT="addCommentHandler"
+      />
     </van-popup>
 
     <!-- 分享结构 -->
@@ -92,6 +100,7 @@ export default {
       errorStatus: 0,
       showShare: false,
       totalCount: 0,
+      allCommentList: [], // 这个数据非常关键， 评论列表组件和发表评论组件都需要以这个数据为跳板进行交互
       guanzhuLoading: false,
       sendComment: false,
       options: [
@@ -177,8 +186,11 @@ export default {
       this.guanzhuLoading = false;
     },
     collectedEventHandler(val) {
-      console.log(val);
       this.articleDetail.is_collected = val;
+    },
+    addCommentHandler(val) {
+      this.sendComment = false;
+      this.allCommentList.unshift(val);
     },
   },
 };

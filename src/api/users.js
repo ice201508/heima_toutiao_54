@@ -136,6 +136,15 @@ export const commentsAndRePlayAjax = (params) => {
   });
 };
 
+// 添加评论 以及  添加评论回复
+export const addCommentsAndRePlayAjax = (data) => {
+  return request({
+    url: config.commentsAndRePlay,
+    method: 'POST',
+    data,
+  });
+};
+
 // 获取评论
 export const commentLikingsAjax = (data) => {
   return request({

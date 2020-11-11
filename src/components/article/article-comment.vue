@@ -17,13 +17,18 @@ export default {
       type: [Number, String, Object],
       required: true,
     },
+    list: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   components: {
     ArticleCommentItem,
   },
   data() {
     return {
-      list: [],
       loading: false,
       finished: false,
       totalCount: 0,
