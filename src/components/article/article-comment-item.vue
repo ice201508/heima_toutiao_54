@@ -7,7 +7,9 @@
         <div class="t-content">{{ comment.content }}</div>
         <div class="time">
           <span>{{ comment.pubdate | relativeFilter }}</span>
-          <van-button type="default" round>回复 {{ comment.reply_count }}</van-button>
+          <van-button type="default" round @click="$emit('close-reply')"
+            >回复 {{ comment.reply_count }}</van-button
+          >
         </div>
       </div>
       <div class="three">
@@ -32,6 +34,11 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      commentReplyShow: false,
+    };
   },
   methods: {
     async handlerLiking() {

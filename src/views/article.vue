@@ -33,6 +33,7 @@
         :list="allCommentList"
         @on-success-event="totalCount = $event"
         :userId="articleDetail.art_id"
+        @close-reply="replyHandler"
       />
     </div>
     <div v-else-if="isLoading && errorStatus == 404">
@@ -72,6 +73,11 @@
       />
     </van-popup>
 
+    <!-- 评论回复的弹出层 -->
+    <van-popup v-model="commentReplyShow" position="bottom" :style="{ height: '100%' }">
+      <article-comment-reply @close="commentReplyShow = false" :currentComment="currentComment" />
+    </van-popup>
+
     <!-- 分享结构 -->
     <van-share-sheet v-model="showShare" title="立即分享给好友" :options="options" />
   </div>
@@ -84,6 +90,7 @@ import Collected from '@/components/user/collected.vue';
 import Attitude from '@/components/user/attitude.vue';
 import ArticleComment from '@/components/article/article-comment.vue';
 import ArticleCommentPost from '@/components/article/article-comment-post.vue';
+import ArticleCommentReply from '@/components/article/article-comment-reply.vue';
 
 export default {
   name: 'Article',
@@ -103,6 +110,8 @@ export default {
       allCommentList: [], // 这个数据非常关键， 评论列表组件和发表评论组件都需要以这个数据为跳板进行交互
       guanzhuLoading: false,
       sendComment: false,
+      currentComment: {},
+      commentReplyShow: false,
       options: [
         [
           { name: '微信', icon: 'wechat' },
@@ -122,6 +131,7 @@ export default {
     Attitude,
     ArticleComment,
     ArticleCommentPost,
+    ArticleCommentReply,
   },
   created() {
     this.getArticleDetails();
@@ -191,6 +201,11 @@ export default {
     addCommentHandler(val) {
       this.sendComment = false;
       this.allCommentList.unshift(val);
+    },
+    replyHandler(val) {
+      this.commentReplyShow = true;
+      // 当用户点击了 回复按钮以后， 或当当前的那一条评论的所有数据
+      this.currentComment = val;
     },
   },
 };
