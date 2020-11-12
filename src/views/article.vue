@@ -75,7 +75,11 @@
 
     <!-- 评论回复的弹出层 -->
     <van-popup v-model="commentReplyShow" position="bottom" :style="{ height: '100%' }">
-      <article-comment-reply @close="commentReplyShow = false" :currentComment="currentComment" />
+      <article-comment-reply
+        v-if="commentReplyShow"
+        @close="commentReplyShow = false"
+        :currentComment="currentComment"
+      />
     </van-popup>
 
     <!-- 分享结构 -->
@@ -96,9 +100,14 @@ export default {
   name: 'Article',
   props: {
     articleId: {
-      type: String,
+      type: [String, Number, Object],
       required: true,
     },
+  },
+  provide() {
+    return {
+      articleId: this.articleId,
+    };
   },
   data() {
     return {

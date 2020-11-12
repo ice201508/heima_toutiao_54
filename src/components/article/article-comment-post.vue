@@ -23,6 +23,19 @@ export default {
       type: [Number, String, Object],
       required: true,
     },
+    comid: {
+      type: [Number, String, Object],
+      // required: true,
+    },
+  },
+  inject: {
+    articleId: {
+      type: [Number, String, Object],
+      default: null,
+    },
+  },
+  created() {
+    console.log(222, this.articleId);
   },
   data() {
     return {
@@ -34,8 +47,9 @@ export default {
       const res = await addCommentsAndRePlayAjax({
         target: this.userId.toString(),
         content: this.commentMessage,
-        // art_id: 文章id；  对文章的评论发表回复时需要
+        art_id: this.comid ? this.comid.toString() : null, // 文章id；  对文章的评论发表回复时需要
       });
+      console.log(res);
       // 添加评论成功以后，需要将本地视图对应的数据进更新
       this.$emit('ADD-COMMENT-EVENT', res.data.new_obj);
     },
