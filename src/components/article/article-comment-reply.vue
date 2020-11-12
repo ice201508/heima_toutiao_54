@@ -52,7 +52,7 @@ export default {
         this.totalCount = res.data.total_count;
         this.$emit('on-success-event', res.data.total_count);
 
-        // 加载状态结束
+        // 加载状态结束1
         this.loading = false;
 
         // 数据全部加载完毕
