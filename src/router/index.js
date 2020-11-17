@@ -39,15 +39,18 @@ const routes = [
   // },
   {
     path: '/login',
+    name: 'login',
     component: () => import('@/views/login'),
   },
   {
     path: '/search',
+    name: 'search',
     component: () => import('@/views/search'),
   },
   {
     path: '/article/:articleId',
     props: true,
+    name: 'article',
     component: () => import('@/views/article'),
   },
   {
@@ -56,18 +59,25 @@ const routes = [
     children: [
       {
         path: '',
+        name: 'home22',
+        meta: {
+          keepAlive: true,
+        },
         component: () => import('@/views/home'),
       },
       {
         path: 'qa',
+        name: 'qa',
         component: () => import('@/views/qa'),
       },
       {
         path: 'video',
+        name: 'video',
         component: () => import('@/views/video'),
       },
       {
         path: 'my',
+        name: 'my',
         component: () => import('@/views/my'),
       },
     ],
@@ -78,7 +88,7 @@ const router = new VueRouter({
   mode: 'history',
   routes,
   scrollBehavior(to, from, savedPosition) {
-    console.log(to, from, savedPosition);
+    // console.log(to, from, savedPosition);
     // //scrollBehavior方法接收to，form路由对象
     // //第三个参数savedPosition当且仅当在浏览器前进后退按钮触发时才可用
     // //该方法会返回滚动位置的对象信息，如果返回false，或者是一个空的对象，那么不会发生滚动

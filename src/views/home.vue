@@ -19,6 +19,9 @@
       swipeable
     >
       <van-tab :name="item.id" :title="item.name" v-for="item in channels" :key="item.id">
+        <!-- <keep-alive>
+          <article-list :channel="item" />
+        </keep-alive> -->
         <article-list :channel="item" />
       </van-tab>
       <div class="hanberge-btn" slot="nav-right">
@@ -52,7 +55,7 @@ import ArticleList from '@/components/article/article-list.vue';
 import ChannelEdit from '@/components/channel-edit.vue';
 
 export default {
-  name: 'Home',
+  name: 'home22',
   data() {
     return {
       active: 0,
@@ -61,6 +64,7 @@ export default {
     };
   },
   created() {
+    console.log('组件home会缓存吗');
     this.getChannels();
   },
   components: {

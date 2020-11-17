@@ -33,6 +33,12 @@ export default {
       refreshSuccessText: '',
     };
   },
+  created() {
+    console.log('一个tab一个子组件创建');
+  },
+  activated() {
+    console.log('缓存组件有效果吗？');
+  },
   methods: {
     async onLoad() {
       try {
